@@ -1,0 +1,29 @@
+# DeepMaize ResNet - Maize Disease Classification
+# Deep Learning Course Project - 400L
+#
+# Install with: pip install -r requirements.txt
+
+# Core Deep Learning Framework
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Data Science & Numerical Computing
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Machine Learning Metrics
+scikit-learn>=1.3.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Image Processing
+Pillow>=10.0.0
+
+# Progress Bars (optional, for training visualization)
+tqdm>=4.65.0
+
+# Jupyter Support (optional, for notebooks)
+jupyter>=1.0.0
+ipykernel>=6.25.0
