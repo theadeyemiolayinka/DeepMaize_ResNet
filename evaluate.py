@@ -373,7 +373,8 @@ def train_baseline_briefly(model, dataloader, device, num_epochs=5):
             total += labels.size(0)
         
         epoch_loss = running_loss / total
-        epoch_acc = running_corrects.double() / total
+        # Move to CPU for MPS compatibility (MPS doesn't support float64)
+        epoch_acc = running_corrects.cpu().float() / total
         print(f"  Epoch {epoch+1}/{num_epochs} - Loss: {epoch_loss:.4f}, Acc: {epoch_acc:.4f}")
     
     return model

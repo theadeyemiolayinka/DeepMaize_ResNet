@@ -304,9 +304,9 @@ def train_model(
             if phase == 'train' and scheduler is not None:
                 scheduler.step()
             
-            # Calculate epoch metrics
+            # Calculate epoch metrics (move to CPU for MPS compatibility)
             epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_acc = running_corrects.double() / dataset_sizes[phase]
+            epoch_acc = running_corrects.cpu().float() / dataset_sizes[phase]
             
             # Store history
             if phase == 'train':
@@ -329,10 +329,10 @@ def train_model(
                     'epoch': epoch + 1,
                     'model_state_dict': best_model_wts,
                     'optimizer_state_dict': optimizer.state_dict(),
-                    'best_acc': best_acc.item(),
+                    'best_acc': float(best_acc),
                     'class_names': dataloaders['train'].dataset.subset.dataset.classes
                 }, save_path)
-                print(f"  ✓ New best model saved! (Acc: {best_acc:.4f})")
+                print(f"  * New best model saved! (Acc: {best_acc:.4f})")
     
     # Calculate training time
     time_elapsed = time.time() - since
