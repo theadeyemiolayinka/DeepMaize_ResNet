@@ -27,3 +27,6 @@ tqdm>=4.65.0
 # Jupyter Support (optional, for notebooks)
 jupyter>=1.0.0
 ipykernel>=6.25.0
+
+# Web Application Deployment
+Flask>=3.0.0

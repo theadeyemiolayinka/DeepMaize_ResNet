@@ -12,15 +12,16 @@ A custom Convolutional Neural Network with **Spatial Attention** for classifying
 
 ## Table of Contents
 
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Dataset](#-dataset)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Results](#-results)
-- [Project Structure](#-project-structure)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Dataset](#dataset)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Web Deployment](#web-deployment)
+- [Results](#results)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -263,6 +264,50 @@ print(f"Confidence: {probabilities[0][predicted_class]:.2%}")
 
 ---
 
+## Web Deployment
+
+Deploy the trained model as a web application with a beautiful UI.
+
+### Running the Web App
+
+```bash
+# Make sure the model is trained first
+python train.py
+
+# Start the Flask server
+python web/app.py
+
+# Open in browser
+# http://localhost:8123
+```
+
+### Web App Features
+
+- **Drag & Drop Upload**: Easy image upload with preview
+- **Real-time Analysis**: Instant disease classification
+- **Detailed Results**: Confidence scores, disease information, symptoms, and treatment recommendations
+- **Cross-Platform**: Works on any device with a web browser
+
+### API Endpoint
+
+```bash
+# POST /predict
+curl -X POST -F "file=@leaf_image.jpg" http://localhost:8123/predict
+
+# Response:
+{
+  "success": true,
+  "prediction": {
+    "class": "Healthy",
+    "confidence": 98.5,
+    "all_probabilities": {...}
+  },
+  "disease_info": {...}
+}
+```
+
+---
+
 ## Results
 
 ### Model Comparison
@@ -290,18 +335,26 @@ After running `evaluate.py`, check the `evaluation_results/` directory for:
 
 ```
 DeepMaize_ResNet/
-├── 📄 model.py              # MaizeAttentionNet architecture
-├── 📄 train.py              # Training script
-├── 📄 evaluate.py           # Evaluation and comparison script
-├── 📄 requirements.txt      # Python dependencies
-├── 📄 README.md             # This file
-├── 📄 .gitignore            # Git ignore rules
-├── 📁 data/                 # Dataset directory (not tracked)
+├── model.py                 # MaizeAttentionNet architecture
+├── train.py                 # Training script
+├── evaluate.py              # Evaluation and comparison script
+├── requirements.txt         # Python dependencies
+├── README.md                # This file
+├── .gitignore               # Git ignore rules
+├── LICENSE                  # MIT License
+├── data/                    # Dataset directory (not tracked)
 │   ├── Blight/
 │   ├── Common_Rust/
 │   ├── Gray_Leaf_Spot/
 │   └── Healthy/
-└── 📁 evaluation_results/   # Generated evaluation outputs
+├── web/                     # Web application
+│   ├── app.py               # Flask server
+│   ├── templates/
+│   │   └── index.html       # Web UI template
+│   └── static/
+│       └── css/
+│           └── style.css    # Custom styles
+└── evaluation_results/      # Generated evaluation outputs
     ├── confusion_matrix_maize.png
     ├── confusion_matrix_baseline.png
     ├── roc_curves_maize.png
