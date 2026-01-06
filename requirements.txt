@@ -20,6 +20,7 @@ seaborn>=0.12.0
 
 # Image Processing
 Pillow>=10.0.0
+scipy>=1.11.0  # For robustness evaluation (motion blur)
 
 # Progress Bars (optional, for training visualization)
 tqdm>=4.65.0
@@ -30,3 +31,6 @@ ipykernel>=6.25.0
 
 # Web Application Deployment
 Flask>=3.0.0
+
+# Model Benchmarking
+thop>=0.1.1  # PyTorch OpCounter for FLOPs calculation

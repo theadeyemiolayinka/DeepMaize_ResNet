@@ -18,6 +18,9 @@ A custom Convolutional Neural Network with **Spatial Attention** for classifying
 - [Installation](#installation)
 - [Usage](#usage)
 - [Web Deployment](#web-deployment)
+- [Visualization](#visualization)
+- [Benchmarking](#benchmarking)
+- [Robustness](#robustness)
 - [Results](#results)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -308,6 +311,104 @@ curl -X POST -F "file=@leaf_image.jpg" http://localhost:8123/predict
 
 ---
 
+## Visualization
+
+Visualize model predictions using Grad-CAM (Gradient-weighted Class Activation Mapping).
+
+### Running Grad-CAM Analysis
+
+```bash
+python visualize.py
+```
+
+**Output** (saved to `./evaluation_results/gradcam/`):
+- `gradcam_analysis.png` - Single image analysis with 3 panels:
+  - (A) Original Image
+  - (B) Spatial Attention Map (from model's attention layer)
+  - (C) Grad-CAM Overlay (highlighting regions important for classification)
+- `gradcam_batch_analysis.png` - Comparison across all 4 disease classes
+
+### Understanding the Visualizations
+
+| Visualization | Description |
+|---------------|-------------|
+| **Original Image** | The input maize leaf image |
+| **Spatial Attention** | Model's learned attention weights highlighting important regions |
+| **Grad-CAM Overlay** | Gradient-based heatmap showing which regions influenced the prediction |
+
+---
+
+## Benchmarking
+
+Compare model efficiency between MaizeAttentionNet and MobileNetV2 baseline.
+
+### Running Benchmarks
+
+```bash
+python benchmark.py
+```
+
+**Metrics Computed**:
+
+| Metric | Description |
+|--------|-------------|
+| **Parameters** | Total model parameters (in millions) |
+| **FLOPs** | Floating point operations for a single 224×224 input |
+| **Model Size** | Disk space of the saved model file (MB) |
+| **CPU Latency** | Average inference time on CPU (ms) |
+| **GPU/MPS Latency** | Average inference time on GPU or Apple Silicon (ms) |
+
+**Output**:
+- Console: Formatted comparison table
+- `./evaluation_results/efficiency_results.txt` - Detailed benchmark report with hardware info
+
+### Hardware Detection
+
+The benchmark script automatically detects and logs:
+- CPU model/name
+- GPU name and memory (NVIDIA CUDA or Apple MPS)
+- PyTorch and CUDA versions
+
+---
+
+## Robustness
+
+Evaluate model robustness against image corruption and noise.
+
+### Running Robustness Tests
+
+```bash
+python robustness.py
+```
+
+### Noise Types Tested
+
+| Noise Type | Description | Real-world Scenario |
+|------------|-------------|--------------------|
+| **Gaussian Noise** | Random pixel-level noise | Low-light camera grain |
+| **Motion Blur** | Directional blur | Shaky hands, camera movement |
+| **Brightness Drop** | Reduced image brightness | Shadows, underexposure |
+
+### Noise Intensity Levels
+
+- **Low**: Mild corruption (33% intensity)
+- **Medium**: Moderate corruption (66% intensity)
+- **High**: Severe corruption (100% intensity)
+
+### Output
+
+- `./evaluation_results/robustness_chart.png` - Line graphs comparing model accuracy vs noise intensity
+- `./evaluation_results/robustness_results.txt` - Detailed results with accuracy drop analysis
+- `./evaluation_results/robustness_results.pth` - Raw results for further analysis
+
+### Interpretation
+
+The robustness evaluation tests whether the **Spatial Attention mechanism** helps maintain accuracy under challenging conditions. A more robust model will show:
+- Smaller accuracy drops as noise increases
+- Better performance compared to baseline at higher noise levels
+
+---
+
 ## Results
 
 ### Model Comparison
@@ -338,6 +439,9 @@ DeepMaize_ResNet/
 ├── model.py                 # MaizeAttentionNet architecture
 ├── train.py                 # Training script
 ├── evaluate.py              # Evaluation and comparison script
+├── visualize.py             # Grad-CAM visualization script
+├── benchmark.py             # Model efficiency benchmarking
+├── robustness.py            # Robustness evaluation script
 ├── requirements.txt         # Python dependencies
 ├── README.md                # This file
 ├── .gitignore               # Git ignore rules
@@ -359,7 +463,13 @@ DeepMaize_ResNet/
     ├── confusion_matrix_baseline.png
     ├── roc_curves_maize.png
     ├── roc_curves_baseline.png
-    └── model_comparison.png
+    ├── model_comparison.png
+    ├── efficiency_results.txt
+    ├── robustness_chart.png
+    ├── robustness_results.txt
+    └── gradcam/
+        ├── gradcam_analysis.png
+        └── gradcam_batch_analysis.png
 ```
 
 ---
